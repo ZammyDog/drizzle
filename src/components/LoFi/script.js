@@ -9,7 +9,7 @@ function importAll(r) {
 }
 
 const drums = importAll(require.context('./samples/drums', false, /\.(mp3)$/));
-console.log(drums);
+// TODO: filter fx
 const FX = importAll(require.context('./samples/fx', false, /\.(mp3)$/));
 const Beep = require('./samples/effects/beep.mp3');
 
@@ -142,7 +142,7 @@ function toggleDrum(value, changeFilter = false, time = 0) {
 
   // sync ui
   // drumToggle.checked = !state.drum.mute;
-  // assets.switchAvatar(state.drum.mute);
+  // assets.plsSwitchAvatar(state.drum.mute);
 }
 
 function checkStarted() {
@@ -169,8 +169,8 @@ function toggleBackgroundSounds(value) {
 
     if (checkStarted()) {
       state.backgroundSounds.samples
-        .get(state.backgroundSounds.names[state.backgroundSounds.index])
-        .start();
+        .player(state.backgroundSounds.names[state.backgroundSounds.index])
+        .start(0);
     }
   }
 
@@ -239,6 +239,19 @@ function toggleBass(value) {
   }
 
   // bassMuteCheckbox.checked = !state.bass.mute;
+}
+
+function plsSwitch(index) {
+  state.backgroundSounds.samples
+    .player(state.backgroundSounds.names[state.backgroundSounds.index])
+    .stop();
+  state.backgroundSounds.index = index;
+  console.log(index);
+  if (checkStarted()) {
+    state.backgroundSounds.samples
+      .player(state.backgroundSounds.names[state.backgroundSounds.index])
+      .start(0);
+  }
 }
 
 function changeMasterVolume(v) {
@@ -472,7 +485,7 @@ function reset() {
   changeMelodyByIndex(1);
   changeInterpolationIndex(0);
   changeMelodyInstrument(3);
-  state.backgroundSounds.switch(1);
+  plsSwitch(1);
   state.backgroundSounds.gainNode.gain.value = 0.7;
 }
 
@@ -508,7 +521,7 @@ function randomChange() {
   }
   if (seed < 0.05) {
     const index = Math.floor(Math.random() * 4);
-    state.backgroundSounds.switch(index);
+    plsSwitch(index);
   }
 }
 
@@ -517,35 +530,35 @@ function seqCallback(time, b) {
     if (state.drum.patternIndex === 0) {
       if (b % 16 === 0) {
         state.drum.scale.kk = 1;
-        state.drum.samples.get('kk').start(time);
+        state.drum.samples.player('kk').start(time);
       }
       if (b % 16 === 8) {
         state.drum.scale.sn = 1;
-        state.drum.samples.get('sn').start(time);
+        state.drum.samples.player('sn').start(time);
       }
       if (b % 2 === 0) {
         state.drum.scale.hh = 1;
-        state.drum.samples.get('hh').start(time);
+        state.drum.samples.player('hh').start(time);
       }
     } else if (state.drum.patternIndex === 1) {
       if (b % 32 === 0 || b % 32 === 20) {
-        state.drum.samples.get('kk').start(time);
+        state.drum.samples.player('kk').start(time);
       }
       if (b % 16 === 8) {
-        state.drum.samples.get('sn').start(time);
+        state.drum.samples.player('sn').start(time);
       }
       if (b % 2 === 0) {
-        state.drum.samples.get('hh').start(time + 0.07);
+        state.drum.samples.player('hh').start(time + 0.07);
       }
     } else if (state.drum.patternIndex === 2) {
       if (b % 16 === 0 || b % 16 === 10 || (b % 32 >= 16 && b % 16 === 11)) {
-        state.drum.samples.get('kk').start(time);
+        state.drum.samples.player('kk').start(time);
       }
       if (b % 8 === 4) {
-        state.drum.samples.get('sn').start(time);
+        state.drum.samples.player('sn').start(time);
       }
       if (b % 2 === 0) {
-        state.drum.samples.get('hh').start(time + 0.07);
+        state.drum.samples.player('hh').start(time + 0.07);
       }
     }
   }
@@ -581,18 +594,18 @@ function onTransportStart() {
     return;
   }
   state.backgroundSounds.samples
-    .get(state.backgroundSounds.names[state.backgroundSounds.index])
-    .start();
+    .player(state.backgroundSounds.names[state.backgroundSounds.index])
+    .start(0);
 }
 
 function onTransportStop() {
   state.backgroundSounds.samples
-    .get(state.backgroundSounds.names[state.backgroundSounds.index])
+    .player(state.backgroundSounds.names[state.backgroundSounds.index])
     .stop();
 }
 
 function startTransport() {
-  Tone.Transport.start();
+  Tone.Transport.start(0);
   onTransportStart();
   // startButton.textContent = 'stop';
   // assets.light.src = './assets/light-on.png';
@@ -752,14 +765,14 @@ function onFinishLoading() {
   //   sendInterpolationMessage(state.melody.interpolationData[0]);
   // });
 
-  state.backgroundSounds.switch(state.backgroundSounds.index);
+  plsSwitch(state.backgroundSounds.index);
   toggleBackgroundSounds(state.backgroundSounds.mute);
   // backgroundSoundsMuteCheckbox.addEventListener('change', () => {
   //   toggleBackgroundSounds(!backgroundSoundsMuteCheckbox.checked);
   // });
 
   // backgroundSoundsSelect.addEventListener('change', () => {
-  //   state.backgroundSounds.switch(Number(backgroundSoundsSelect.value));
+  //   plsSwitch(Number(backgroundSoundsSelect.value));
   // });
 
   toggleMelody(state.melody.mute);
@@ -891,7 +904,6 @@ function consumeNextCommand() {
 
   // const { authorName, content, id, args } = state.commands.shift();
   const data = state.commands.shift();
-  console.log(`${data.id}`);
 
   if (callbacks[data.id]) {
     state.idleBarsCount = 0;
@@ -922,7 +934,6 @@ function initSounds() {
   state.drum.names.forEach((n, i) => { drumUrls[n] = drums[i]; });
   state.drum.gainNode = new Tone.Gain(1).toMaster();
   state.drum.lpf = new Tone.Filter(10000, 'lowpass').connect(state.drum.gainNode);
-  console.log(drumUrls);
   state.drum.samples = new Tone.Players(drumUrls, () => {
     console.log('drums loaded');
     checkFinishLoading();
@@ -935,8 +946,11 @@ function initSounds() {
   );
   const sampleUrls = {};
   state.backgroundSounds.names.forEach((n, i) => { sampleUrls[n] = FX[i]; });
+  console.log(sampleUrls);
   state.backgroundSounds.samples = new Tone.Players(sampleUrls, () => {
-    console.log('background sounds loaded');
+    state.backgroundSounds.names.forEach((name) => {
+      state.backgroundSounds.samples.player(name).loop = true;
+    });
     checkFinishLoading();
   }).connect(state.backgroundSounds.hpf);
 
@@ -944,10 +958,6 @@ function initSounds() {
     console.log('beep loaded');
     checkFinishLoading();
   }).toMaster();
-
-  state.backgroundSounds.names.forEach((name) => {
-    state.backgroundSounds.samples.get(name).loop = true;
-  });
   state.seq = new Tone.Sequence(
     seqCallback,
     Array(128)
@@ -995,7 +1005,6 @@ function initSounds() {
     instruments: 'guitar-electric',
   }, () => {
     checkFinishLoading();
-    console.log('guitar-electric loaded');
   });
 
   const { bass } = state;
