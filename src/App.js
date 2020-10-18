@@ -8,11 +8,10 @@ import weatherIcons from './tools/weatherIcons';
 import { getDayNight, getWeatherName, getImage } from './tools/helpers';
 // import './components/LoFi/script';
 
-const STARTER_BACKGROUND = 'https://res.cloudinary.com/dhzssvuhz/image/upload/v1602988324/drizzle/henrik-evensen-winter-forest_dyb1es.jpg';
 // how often to refresh weather (in seconds)
-const REFRESH_CD = 30;
+const REFRESH_CD = 60;
 // how often to change image on refresh (every X refreshes)
-const CHANGE_IMAGE_CD = 4;
+const CHANGE_IMAGE_CD = 2;
 
 class App extends React.Component {
   constructor(props) {
@@ -27,6 +26,10 @@ class App extends React.Component {
       weatherIcon: '',
       hiLoStr: '',
       image: '',
+      hourly: [],
+      showTime: true,
+      showTemperature: true,
+      showHourly: true,
     };
 
     this.first = true;
@@ -85,6 +88,12 @@ class App extends React.Component {
             weatherIcon: weatherIcons[getDayNight(moment().hours())][weatherName],
             hiLoStr: `${Math.round(nextWeather.min)}°/${Math.round(nextWeather.max)}°`,
             image: changeImage ? getImage(moment().hours(), weatherName) : this.state.image,
+            hourly: response.data.hourly.slice(1, 7).map((t, i) => ({
+              temp: Math.round(t.temp),
+              time: moment().add(i + 1, 'hours').format('h'),
+              timeAdd: moment().add(i + 1, 'hours').format('a'),
+              icon: weatherIcons[getDayNight((moment().hours() + i + 1) % 24)][t.weather[0].main],
+            })),
           }, cb ? () => cb() : () => {});
         })
         .catch((err) => console.error(err));
@@ -93,14 +102,19 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className={styles.regularBody} style={{ backgroundImage: `url(${this.state.image ? this.state.image.link : STARTER_BACKGROUND})` }}>
+      <div className={styles.regularBody} style={{ backgroundImage: this.state.image ? `url(${this.state.image.link})` : null }}>
         <div className={styles.titleBar}>
           <i className={classNames('fas fa-times', styles.closeIcon)} aria-label="Close" role="button" tabIndex={0} onClick={window.close} />
         </div>
 
         {this.state.ready ? (
           <>
-            <div className={styles.time}>
+            <div
+              className={classNames(styles.time, styles.backgroundHover, { [styles.invisible]: !this.state.showTime })}
+              role="button"
+              tabIndex={0}
+              onClick={() => this.setState({ showTime: !this.state.showTime })}
+            >
               <div style={{ height: 86 }}>
                 {this.state.time}
                 <span style={{ fontSize: 24 }}>{this.state.timeAdd}</span>
@@ -110,11 +124,36 @@ class App extends React.Component {
               </div>
             </div>
 
-            <div className={styles.temperature}>
-              {`${this.state.temperature}°`}
-              <div className={styles.weatherRow}>
-                <img src={this.state.weatherIcon} alt="weather" className={styles.weatherIcon} draggable={false} />
-                {this.state.hiLoStr}
+            <div className={styles.weatherColumn}>
+              <div
+                className={classNames(styles.temperature, styles.backgroundHover, { [styles.invisible]: !this.state.showTemperature })}
+                role="button"
+                tabIndex={0}
+                onClick={() => this.setState({ showTemperature: !this.state.showTemperature })}
+              >
+                {`${this.state.temperature}°`}
+                <div className={styles.weatherRow}>
+                  <img src={this.state.weatherIcon} alt="weather" className={styles.weatherIcon} draggable={false} />
+                  {this.state.hiLoStr}
+                </div>
+              </div>
+
+              <div
+                className={classNames(styles.hourlyWeather, styles.backgroundHover, { [styles.invisible]: !this.state.showHourly })}
+                role="button"
+                tabIndex={0}
+                onClick={() => this.setState({ showHourly: !this.state.showHourly })}
+              >
+                {this.state.hourly.map((t, i) => (
+                  <div key={i} className={styles.hourlyBox}>
+                    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end' }}>
+                      <span style={{ fontSize: 10 }}>{t.time}</span>
+                      <span style={{ fontSize: 8 }}>{t.timeAdd}</span>
+                    </div>
+                    <img src={t.icon} alt="weather" className={styles.hourlyIcon} draggable={false} />
+                    {`${t.temp}°`}
+                  </div>
+                ))}
               </div>
             </div>
 

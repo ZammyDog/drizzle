@@ -54,6 +54,9 @@
   user-select: none;
   font-size: 82px;
   line-height: 86px;
+  cursor: pointer;
+  outline: none;
+  transition: 200ms;
 }
 
 .dateText {
@@ -61,10 +64,17 @@
   line-height: 16px;
 }
 
-.temperature {
+.weatherColumn {
   position: absolute;
   bottom: 30px;
   right: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.temperature {
   background-color: rgba(0, 0, 0, 0.2);
   width: 100px;
   height: 100px;
@@ -77,6 +87,41 @@
   user-select: none;
   font-size: 54px;
   line-height: 56px;
+  cursor: pointer;
+  outline: none;
+  transition: 200ms;
+}
+
+.hourlyWeather {
+  background-color: rgba(0, 0, 0, 0.2);
+  width: 200px;
+  height: 55px;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 8px 3px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+  font-size: 12px;
+  line-height: 16px;
+  margin-top: 12px;
+  cursor: pointer;
+  outline: none;
+  transition: 200ms;
+}
+
+.hourlyBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  margin: auto 3px;
+}
+
+.hourlyIcon {
+  height: 20px;
 }
 
 .weatherRow {
@@ -99,7 +144,7 @@
   position: absolute;
   top: 20px;
   left: 20px;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.4);
   width: 35px;
   height: 35px;
   border-radius: 5px;
@@ -113,11 +158,34 @@
   outline: none;
   font-size: 24px;
   opacity: 0;
-  transform: translate(-50%, -50%) scale(0.5);
+  transform: scale(0.7);
   transition: 200ms;
 }
 
 .regularBody:hover > .settingsIcon {
   opacity: 1;
-  transform: translate(0, 0) scale(1);
+  transform: scale(1);
+}
+
+.regularBody:hover > .backgroundHover {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.regularBody:hover > .weatherColumn > .backgroundHover {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.invisible {
+  opacity: 0;
+  transform: scale(0.7);
+}
+
+.regularBody:hover > .weatherColumn > .invisible {
+  opacity: 0.4;
+  transform: scale(1);
+}
+
+.regularBody:hover > .invisible {
+  opacity: 0.4;
+  transform: scale(1);
 }

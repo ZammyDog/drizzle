@@ -16,6 +16,7 @@ function createWindow() {
       webSecurity: false,
     },
     frame: false,
+    icon: path.join(__dirname, '/../public/favicon.ico'),
   });
 
   mainWindow.setMenuBarVisibility(false);
