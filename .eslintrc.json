@@ -38,6 +38,6 @@
       "screen": true,
       "Audio": true,
       "Worker": true,
-      "Navigator": true
+      "navigator": true
     }
 }

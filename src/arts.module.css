@@ -37,10 +37,33 @@
   -webkit-app-region: no-drag;
 }
 
-.temp {
+.time {
   position: absolute;
-  bottom: 40px;
-  left: 40px;
+  bottom: 30px;
+  left: 30px;
+  background-color: rgba(0, 0, 0, 0.2);
+  width: 260px;
+  height: 120px;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 8px 3px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+  font-size: 82px;
+  line-height: 86px;
+}
+
+.dateText {
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.temperature {
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
   background-color: rgba(0, 0, 0, 0.2);
   width: 100px;
   height: 100px;
