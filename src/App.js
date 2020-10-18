@@ -305,7 +305,10 @@ class App extends React.Component {
 
               <br />
 
-
+              <div className={styles.inputRow}>
+                <input type="checkbox" className={styles.checkbox} checked={this.state.noTwentySec} onChange={() => this.setState({ noTwentySec: !this.state.noTwentySec })} />
+                block 20 second breaks
+              </div>
             </form>
 
             {this.state.twentySec > 0 ? (

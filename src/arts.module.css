@@ -268,7 +268,6 @@
   left: 60px;
   background-color: rgba(0, 0, 0, 0.6);
   width: 300px;
-  height: 200px;
   box-sizing: border-box;
   padding: 8px 12px;
   border-radius: 5px;
@@ -298,10 +297,10 @@
   width: 60%;
   font-size: 14px;
   border-width: 2px;
-  border-color: #222;
+  border-color: #474755;
   border-style: solid;
   border-radius: 6px;
-  background-color: #333;
+  background-color: #1F2027;
   color: #fff;
   outline: none;
 }
@@ -322,6 +321,38 @@
   align-items: center;
   margin-left: 10px;
   color: #fff;
+}
+
+.checkbox {
+  appearance: none;
+  outline: none;
+  user-select: none;
+  cursor: pointer;
+  height: 32px;
+  width: 52px;
+  border-radius: 16px;
+  display: inline-block;
+  position: relative;
+  margin: 0 10px 0 0;
+  border: 2px solid #474755;
+  background-color: #1F2027;
+  transition: all 200ms ease;
+}
+.checkbox::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #aaa;
+  box-shadow: 0 1px 2px rgba(44, 44 ,44, 0.2);
+  transition: all 200ms cubic-bezier(0.5, 0.1, 0.75, 1.35);
+}
+.checkbox:checked::after {
+  background-color: #fff;
+  transform: translateX(20px);
 }
 
 .regularBody:hover > .settingsIcon,
