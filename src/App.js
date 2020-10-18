@@ -17,8 +17,7 @@ const CHANGE_IMAGE_CD = 2;
 // how often to change the beat maybe
 const CHANGE_LOFI_CD = 20;
 // look away for 20 sec every 20 min
-// TODO: fix this
-const TWENTY_MINUTES = 40;
+const TWENTY_MINUTES = 60 * 20;
 const TWENTY_MINUTES_DURATION = 30;
 
 const openLink = (url) => {

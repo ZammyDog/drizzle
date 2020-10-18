@@ -112,13 +112,6 @@ export default [
     time: ['day'],
     types: ['Clear', 'Few Clouds', 'Clouds'],
   }, {
-    link: 'https://res.cloudinary.com/dhzssvuhz/image/upload/v1602988268/drizzle/lorenzo-lanfranconi-ex-22-f_z1te5b.jpg',
-    desc: 'animals on mountain',
-    author: 'Lorenzo Lanfranconi',
-    authorLink: 'https://www.artstation.com/lorenzolanfranconi',
-    time: ['day'],
-    types: ['Clouds'],
-  }, {
     link: 'https://res.cloudinary.com/dhzssvuhz/image/upload/v1602988300/drizzle/syna-z-6-16_qn9gh8.jpg',
     desc: 'street in front of movie theatre',
     author: 'Syna Z',
