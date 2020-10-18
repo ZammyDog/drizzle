@@ -37,6 +37,7 @@
       "localStorage": true,
       "screen": true,
       "Audio": true,
-      "Worker": true
+      "Worker": true,
+      "Navigator": true
     }
 }

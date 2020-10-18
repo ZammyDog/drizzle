@@ -15,6 +15,7 @@ function createWindow() {
       nodeIntegration: true,
       webSecurity: false,
     },
+    frame: false,
   });
 
   mainWindow.setMenuBarVisibility(false);
