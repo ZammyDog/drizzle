@@ -111,7 +111,7 @@ const workercode = () => {
 
       const [nowTensor, destTensors] = await Promise.all([
         mvae.encode([currentMelody]),
-        mvae.encode(inspirationalMelodies),
+        mvae.encode([inspirationalMelodies]),
       ]);
 
       let tensors = tf

@@ -6,12 +6,15 @@ import moment from 'moment';
 import styles from './arts.module.css';
 import weatherIcons from './tools/weatherIcons';
 import { getDayNight, getWeatherName, getImage } from './tools/helpers';
-// import './components/LoFi/script';
+import { randomChange, changeMasterVolume, changeMasterBpm } from './components/LoFi/script';
 
+const VOLUME_SCALE_DOWN = 150;
 // how often to refresh weather (in seconds)
 const REFRESH_CD = 60;
 // how often to change image on refresh (every X refreshes)
 const CHANGE_IMAGE_CD = 2;
+// how often to change the beat maybe
+const CHANGE_LOFI_CD = 20;
 
 class App extends React.Component {
   constructor(props) {
@@ -30,11 +33,16 @@ class App extends React.Component {
       showTime: true,
       showTemperature: true,
       showHourly: true,
+      volume: 50,
+      bpm: 80,
     };
 
-    this.first = true;
+    changeMasterVolume(this.state.volume / VOLUME_SCALE_DOWN);
+    changeMasterBpm(this.state.bpm);
+
     this.refreshCounter = REFRESH_CD;
     this.changeImageCounter = CHANGE_IMAGE_CD;
+    this.changeLofiCounter = CHANGE_LOFI_CD;
 
     this.getWeather = this.getWeather.bind(this);
   }
@@ -43,6 +51,13 @@ class App extends React.Component {
     this.getWeather(true, () => {
       // potentially update the time every second (so we don't miss a minute)
       this.timeInterval = setInterval(() => {
+        // change the lofi every so often
+        this.changeLofiCounter -= 1;
+        if (this.changeLofiCounter) {
+          this.refreshCounter = CHANGE_LOFI_CD;
+          randomChange();
+        }
+        // refresh the weather if its time, otherwise just update the time
         this.refreshCounter -= 1;
         if (this.refreshCounter <= 0) {
           this.changeImageCounter -= 1;
@@ -94,7 +109,9 @@ class App extends React.Component {
               timeAdd: moment().add(i + 1, 'hours').format('a'),
               icon: weatherIcons[getDayNight((moment().hours() + i + 1) % 24)][t.weather[0].main],
             })),
-          }, cb ? () => cb() : () => {});
+          }, () => {
+            if (cb) cb();
+          });
         })
         .catch((err) => console.error(err));
     });
@@ -122,6 +139,30 @@ class App extends React.Component {
               <div className={styles.dateText}>
                 {this.state.dateStr}
               </div>
+            </div>
+
+            <div className={styles.sliderContainer}>
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value={this.state.volume}
+                onChange={(e) => this.setState({ volume: e.target.value }, () => changeMasterVolume(this.state.volume / VOLUME_SCALE_DOWN))}
+                className={styles.slider}
+              />
+              <i className={classNames(styles.sliderIcon, 'fas fa-volume-up')} />
+            </div>
+
+            <div className={styles.sliderContainer} style={{ right: 10 }}>
+              <input
+                type="range"
+                min="60"
+                max="100"
+                value={this.state.bpm}
+                onChange={(e) => this.setState({ bpm: e.target.value }, () => changeMasterBpm(this.state.bpm))}
+                className={styles.slider}
+              />
+              <i className={classNames(styles.sliderIcon, 'fas fa-fast-forward')} />
             </div>
 
             <div className={styles.weatherColumn}>

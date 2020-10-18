@@ -28,6 +28,7 @@ const ELETRIC_GUITAR = 3;
 const NUM_INSTRUMENTS = 4;
 const NUM_PRESET_MELODIES = 4;
 const NUM_PRESET_CHORD_PROGRESSIONS = 3;
+const NUM_FX = 7;
 
 const worker = LOAD_ML_MODELS ? new Worker(workerScript) : null;
 const callbacks = {};
@@ -43,7 +44,7 @@ const state = {
   backgroundSounds: {
     mute: false,
     samples: [],
-    names: ['rain', 'waves', 'street', 'kids'],
+    names: ['kids', 'mall', 'office', 'rain', 'street', 'vinyl', 'waves'],
     index: 0,
     tone: 1,
   },
@@ -253,12 +254,12 @@ function plsSwitch(index) {
   }
 }
 
-function changeMasterVolume(v) {
+export function changeMasterVolume(v) {
   // masterVolumeSlider.value = v * 100;
   state.master.gain.gain.value = v;
 }
 
-function changeMasterBpm(v) {
+export function changeMasterBpm(v) {
   const limV = Math.min(Math.max(60, v), 100);
   // bpmInput.value = limV;
   state.master.bpm = limV;
@@ -333,6 +334,25 @@ function sendInterpolationMessage(m1, m2, id = 0) {
       msg: 'interpolate',
       left,
       right,
+    });
+}
+
+function sendSampleMessage() {
+  state.melody.waitingInterpolation = true;
+
+  // console.log(`interpolate ${state.melody.index} ${state.melody.secondIndex}`);
+  const firstMelody = state.melody.midis[state.melody.index];
+  const left = midiToModelFormat(firstMelody);
+
+  const secondMelody = state.melody.midis[state.melody.secondIndex];
+  const right = midiToModelFormat(secondMelody);
+
+  // eslint-disable-next-line
+  LOAD_ML_MODELS &&
+    worker.postMessage({
+      currentMelody: left,
+      inspirationalMelodies: right,
+      msg: 'sample',
     });
 }
 
@@ -488,12 +508,14 @@ function reset() {
   state.backgroundSounds.gainNode.gain.value = 0.7;
 }
 
-function randomChange() {
+export function randomChange() {
   let seed = Math.random();
-  if (seed > 0.95) {
+  if (seed > 0.9) {
     randomlyChangeChordsInstrument();
-  } else if (seed < 0.05) {
+  } else if (seed < 0.1) {
     randomlyChangeMelodyInstrument();
+  } else if (seed < 0.175) {
+    changeDrumPattern([0, 1, 2][Math.floor(Math.random() * 3)]);
   }
 
   seed = Math.random();
@@ -507,19 +529,23 @@ function randomChange() {
     randomlyChangeMelodyByIndex();
     return;
   }
-  if (seed < 0.1) {
+  if (seed < 0.15) {
     sendContinueMessage();
+    return;
+  }
+  if (seed < 0.25) {
+    sendSampleMessage();
     return;
   }
 
   seed = Math.random();
-  if (seed > 0.95) {
+  if (seed > 0.85) {
     const index = Math.floor(Math.random() * NUM_PRESET_CHORD_PROGRESSIONS);
     changeChords(index);
     return;
   }
-  if (seed < 0.05) {
-    const index = Math.floor(Math.random() * 4);
+  if (seed < 0.15) {
+    const index = Math.floor(Math.random() * NUM_FX);
     plsSwitch(index);
   }
 }
