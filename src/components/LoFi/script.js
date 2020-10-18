@@ -1026,7 +1026,6 @@ function initSounds() {
     bass.instrument.triggerAttackRelease(note.note, note.duration, time, note.velocity);
   }, bass.notes);
   // ^ removed .start(0)
-  console.log(bass);
   bass.part.loop = true;
   bass.part.loopEnd = '4:0:0';
 

@@ -10,6 +10,7 @@
     "axios": "^0.20.0",
     "classnames": "^2.2.6",
     "moment": "^2.29.1",
+    "moment-timezone": "^0.5.31",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "react-scripts": "3.4.3",

@@ -188,7 +188,7 @@
   width: 75%;
   height: 5px;
   border-radius: 5px;
-  background-color: #333;
+  background-color: #444;
   outline: none;
 }
 .slider::-webkit-slider-thumb {
@@ -199,6 +199,45 @@
   box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 8px 3px;
   border-radius: 50%;
   cursor: pointer;
+}
+
+.twentyPopUp {
+  width: 420px;
+  height: 270px;
+  padding: 10px 15px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 8px 3px;
+  user-select: none;
+  font-size: 30px;
+  line-height: 33px;
+  text-align: center;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.7);
+  animation: popIn 500ms forwards;
+}
+@keyframes popIn {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.7);
+  }
+  100% {
+    opacity: 1;
+    transform: translate-(50%, -50%) scale(1);
+  }
+}
+
+.eyeIcon {
+  font-size: 80px;
+  text-shadow: 2px 2px 8px rgb(128, 128, 128);
+  margin-bottom: 14px;
 }
 
 .settingsIcon {
@@ -223,8 +262,72 @@
   transition: 200ms;
 }
 
+.settingsContainer {
+  position: absolute;
+  top: 60px;
+  left: 60px;
+  background-color: rgba(0, 0, 0, 0.6);
+  width: 300px;
+  height: 200px;
+  box-sizing: border-box;
+  padding: 8px 12px;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 8px 3px;
+  display: flex;
+  flex-direction: column;
+  user-select: none;
+  outline: none;
+  font-size: 16px;
+  opacity: 0;
+  transform: scale(0);
+  transform-origin: top left;
+  transition: 200ms;
+}
+
+.inputRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 3px 0;
+}
+
+.textInput {
+  padding: 5px 10px;
+  margin: 0;
+  line-height: 14px;
+  width: 60%;
+  font-size: 14px;
+  border-width: 2px;
+  border-color: #222;
+  border-style: solid;
+  border-radius: 6px;
+  background-color: #333;
+  color: #fff;
+  outline: none;
+}
+.textInput:focus,
+.textInput:hover {
+  border-color: #ddd;
+}
+
+.searchIcon {
+  outline: none;
+  user-select: none;
+  cursor: pointer;
+  font-size: 16px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 10px;
+  color: #fff;
+}
+
 .regularBody:hover > .settingsIcon,
-.regularBody:hover > .authorLink {
+.regularBody:hover > .authorLink,
+.regularBody:hover > .settingsVisible,
+.regularBody:hover > .searchIcon {
   opacity: 1;
   transform: scale(1);
 }
