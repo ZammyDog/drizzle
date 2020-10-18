@@ -38,6 +38,26 @@
   -webkit-app-region: no-drag;
 }
 
+.authorLink {
+  position: absolute;
+  bottom: 160px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 8px 3px;
+  left: 30px;
+  outline: none;
+  cursor: pointer;
+  user-select: none;
+  font-size: 12px;
+  padding: 5px 7px;
+  opacity: 0;
+  transform: scale(0.7);
+  transition: 200ms;
+}
+
 .time {
   position: absolute;
   bottom: 30px;
@@ -105,7 +125,7 @@
   user-select: none;
   font-size: 12px;
   line-height: 16px;
-  margin-top: 12px;
+  margin-top: 10px;
   cursor: pointer;
   outline: none;
   transition: 200ms;
@@ -203,7 +223,8 @@
   transition: 200ms;
 }
 
-.regularBody:hover > .settingsIcon {
+.regularBody:hover > .settingsIcon,
+.regularBody:hover > .authorLink {
   opacity: 1;
   transform: scale(1);
 }

@@ -16,6 +16,10 @@ const CHANGE_IMAGE_CD = 2;
 // how often to change the beat maybe
 const CHANGE_LOFI_CD = 20;
 
+const openLink = (url) => {
+  window.require('electron').shell.openExternal(url);
+};
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -139,6 +143,10 @@ class App extends React.Component {
               <div className={styles.dateText}>
                 {this.state.dateStr}
               </div>
+            </div>
+
+            <div className={styles.authorLink} role="button" tabIndex={0} onClick={() => openLink(this.state.image.authorLink)}>
+              {`Image: ${this.state.image.author}`}
             </div>
 
             <div className={styles.sliderContainer}>

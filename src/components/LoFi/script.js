@@ -9,7 +9,6 @@ function importAll(r) {
 }
 
 const drums = importAll(require.context('./samples/drums', false, /\.(mp3)$/));
-// TODO: filter fx
 const FX = importAll(require.context('./samples/fx', false, /\.(mp3)$/));
 const Beep = require('./samples/effects/beep.mp3');
 
