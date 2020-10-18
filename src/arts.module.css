@@ -75,4 +75,21 @@
   align-items: center;
   user-select: none;
   font-size: 54px;
+  line-height: 56px;
+}
+
+.weatherRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  user-select: none;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.weatherIcon {
+  height: 20px;
+  margin-right: 7px;
 }
