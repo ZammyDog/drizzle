@@ -13,7 +13,7 @@ const VOLUME_SCALE_DOWN = 75;
 // how often to refresh weather (in seconds)
 const REFRESH_CD = 60;
 // how often to change image on refresh (every X refreshes)
-const CHANGE_IMAGE_CD = 2;
+const CHANGE_IMAGE_CD = 10;
 // how often to change the beat maybe
 const CHANGE_LOFI_CD = 20;
 // look away for 20 sec every 20 min
