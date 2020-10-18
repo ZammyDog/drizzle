@@ -163,13 +163,13 @@ var SampleLibrary = {
       }
 
       const sounds = {};
-      Object.keys(newT).forEach((t, i) => {
+      Object.keys(newT).forEach((x, i) => {
         if (t.instruments === 'piano') {
-          sounds[t] = piano[i];
+          sounds[x] = piano[i];
         } else if (t.instruments === 'guitar-electric') {
-          sounds[t] = guitarElectric[i];
+          sounds[x] = guitarElectric[i];
         } else {
-          sounds[t] = guitarAcoustic[i];
+          sounds[x] = guitarAcoustic[i];
         }
       });
       var s = new Tone.Sampler({

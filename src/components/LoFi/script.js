@@ -87,7 +87,7 @@ const state = {
     mute: false,
     gain: 1,
     tone: 0.5,
-    names: ['kk', 'sn', 'hh'],
+    names: ['hh', 'kk', 'sn'],
     samples: [],
     auto: false,
     patternIndex: 0,
@@ -246,7 +246,6 @@ function plsSwitch(index) {
     .player(state.backgroundSounds.names[state.backgroundSounds.index])
     .stop();
   state.backgroundSounds.index = index;
-  console.log(index);
   if (checkStarted()) {
     state.backgroundSounds.samples
       .player(state.backgroundSounds.names[state.backgroundSounds.index])
@@ -641,7 +640,10 @@ function onFinishLoading() {
   //   }
   //   toggleStart();
   // });
-  toggleStart();
+
+  setTimeout(() => {
+    toggleStart();
+  }, 2000);
 
   // callbacks
 
@@ -946,11 +948,11 @@ function initSounds() {
   );
   const sampleUrls = {};
   state.backgroundSounds.names.forEach((n, i) => { sampleUrls[n] = FX[i]; });
-  console.log(sampleUrls);
   state.backgroundSounds.samples = new Tone.Players(sampleUrls, () => {
     state.backgroundSounds.names.forEach((name) => {
       state.backgroundSounds.samples.player(name).loop = true;
     });
+    console.log('fx loaded');
     checkFinishLoading();
   }).connect(state.backgroundSounds.hpf);
 
@@ -980,33 +982,6 @@ function initSounds() {
   const hpf = new Tone.Filter(1, 'highpass').connect(lpf);
   const chorus = new Tone.Chorus(4, 2.5, 0.1).connect(hpf);
 
-  state.instruments[SYNTHS] = new Tone.PolySynth(Tone.Synth, {
-    envelope: {
-      attack: 0.02,
-      decay: 0.1,
-      sustain: 0.3,
-      release: 1,
-    },
-  }).connect(chorus);
-
-  state.instruments[PIANO] = SampleLibrary.load({
-    instruments: 'piano',
-  }, () => {
-    checkFinishLoading();
-    console.log('piano loaded');
-  });
-  state.instruments[ACOUSTIC_GUITAR] = SampleLibrary.load({
-    instruments: 'guitar-acoustic',
-  }, () => {
-    checkFinishLoading();
-    console.log('guitar-acoustic loaded');
-  });
-  state.instruments[ELETRIC_GUITAR] = SampleLibrary.load({
-    instruments: 'guitar-electric',
-  }, () => {
-    checkFinishLoading();
-  });
-
   const { bass } = state;
   bass.gate = new Tone.Gain(0).connect(reverb);
   bass.gain = new Tone.Gain(1).connect(bass.gate);
@@ -1024,10 +999,41 @@ function initSounds() {
   }).connect(bass.lpf);
   bass.part = new Tone.Part((time, note) => {
     bass.instrument.triggerAttackRelease(note.note, note.duration, time, note.velocity);
-  }, bass.notes).start(0);
+  }, bass.notes);
+  // ^ removed .start(0)
+  console.log(bass);
   bass.part.loop = true;
   bass.part.loopEnd = '4:0:0';
-  console.log(state.instruments);
+
+  state.instruments[SYNTHS] = new Tone.PolySynth().toDestination()
+    .set({
+      envelope: {
+        attack: 0.02,
+        decay: 0.1,
+        sustain: 0.3,
+        release: 1,
+      },
+      maxPolphony: 10,
+    }).connect(chorus);
+
+  state.instruments[PIANO] = SampleLibrary.load({
+    instruments: 'piano',
+  }, () => {
+    console.log('piano loaded');
+    checkFinishLoading();
+  });
+  state.instruments[ACOUSTIC_GUITAR] = SampleLibrary.load({
+    instruments: 'guitar-acoustic',
+  }, () => {
+    console.log('guitar-acoustic loaded');
+    checkFinishLoading();
+  });
+  state.instruments[ELETRIC_GUITAR] = SampleLibrary.load({
+    instruments: 'guitar-electric',
+  }, () => {
+    console.log('guitar-electric loaded');
+    checkFinishLoading();
+  });
   state.instruments[PIANO].connect(chorus);
   state.instruments[ACOUSTIC_GUITAR].connect(chorus);
   state.instruments[ELETRIC_GUITAR].connect(chorus);
@@ -1081,8 +1087,10 @@ function filterNotesInScaleSingle(notes) {
 
 function initModel() {
   worker.postMessage({ msg: 'init' });
+  let loaded = false;
   worker.onmessage = (e) => {
-    if (e.data.msg === 'init') {
+    if (e.data.msg === 'init' && !loaded) {
+      loaded = true;
       console.log('model loaded');
       checkFinishLoading();
     }
