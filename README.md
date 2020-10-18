@@ -1,68 +1,18 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+﻿# drizzle
+Heyo! We built drizzle to provide a way to keep your mind at peace in a crazy world. drizzle uses a variety of instrumental samples and machine learning algorithms to generate calming Lo-Fi hip-hop music. It also provides beautiful images that match your time and weather, and offers a variety of customization to create the app that you need. 
 
-## Available Scripts
+drizzle will also help you follow the 20/20/20 rule of looking at something 20 feet away from your screen for 20 seconds every 20 minutes. This is really important to take care of your eyes, especially when your doing something like a 24 (25) hour hackathon. Oh yeah, and drizzle was built remotely during HackNC 2020.
 
-In the project directory, you can run:
+## What exactly is this?
+drizzle is an [electron.js](https://www.electronjs.org/) desktop application that is combined with [create-react-app.](https://github.com/facebook/create-react-app) We used React for all of our front-end and got all of our weather data from the [OpenWeatherMap API](https://openweathermap.org/api).
 
-### `npm start`
+drizzle's Lo-Fi music generation is based off of [this amazing repo](https://github.com/magenta/lofi-player) and uses [magenta.js](https://github.com/magenta/magenta-js) to get TensorFlow algorithms that generate some of the melodies. We completely reworked much of the Lo-Fi player repo to work with React and to be able to customize it with our own UI. Most of the sound samples used are from [this rad repo](https://github.com/nbrosowsky/tonejs-instruments).
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+We also used [moment.js](https://momentjs.com/) to deal with all of our time management and manipulation. All of the styling was written from scratch with CSS, as well as all components with React JSX. 
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## Can I run it?
+Heck yeah! There are a few things you need to know though. First make sure you download all of the necessary dependencies. Then, set the environment variable `BROWSER=none` and `SKIP_PREFLIGHT_CHECK=true`. You'll also need to set the environment variables `GOOGLE_API_KEY` to a valid key that provides geolocation services and `REACT_APP_OPEN_WEATHER_MAP_KEY`, to a valid key from OpenWeatherMap. Then, just type `npm start` and you should be good to go! Ok, so maybe it's not that easy but we were a little tight for time, you get it.
 
-### `npm test`
+#### ALSO IMPORTANT, WORDS THAT RHYME WITH DRIZZLE:
+sizzle, swizzle, shizzle, chisel, fizzle, ms. frizzle, etc.
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify

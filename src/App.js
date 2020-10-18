@@ -116,7 +116,7 @@ class App extends React.Component {
       // get the weather at our coordinates
       axios.get(`https://api.openweathermap.org/data/2.5/onecall?lat=${coords.latitude}&lon=${coords.longitude}&units=imperial&exclude=alerts&appid=${process.env.REACT_APP_OPEN_WEATHER_MAP_KEY}`)
         .then((response) => {
-          console.log(response.data);
+          // console.log(response.data);
           const weather = response.data.current.weather[0];
           const nextWeather = response.data.daily[0].temp;
           const weatherName = getWeatherName(weather.main, weather.id);
