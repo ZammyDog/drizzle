@@ -14,5 +14,5 @@ We also used [moment.js](https://momentjs.com/) to deal with all of our time man
 Heck yeah! There are a few things you need to know though. First make sure you download all of the necessary dependencies (`npm i`). Then, set the environment variable `BROWSER=none` and `SKIP_PREFLIGHT_CHECK=true`. You'll also need to set the environment variables `GOOGLE_API_KEY` to a valid key that provides geolocation services and `REACT_APP_OPEN_WEATHER_MAP_KEY`, to a valid key from OpenWeatherMap. You'll also need to install `foreman` so you can fun the following command. Then, just type `npm start` and you should be good to go! Ok, so maybe it's not that easy but we were a little tight for time, you get it.
 
 #### ALSO IMPORTANT, WORDS THAT RHYME WITH DRIZZLE:
-sizzle, swizzle, shizzle, chisel, fizzle, ms. frizzle, etc.
+sizzle, swizzle, shizzle, chisel, fizzle, ms. frizzle, grizzle, etc.
 
